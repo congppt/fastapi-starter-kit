@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic-settings
+orjson
+sqlalchemy[asyncio]
+asyncpg
+alembic
+redis
+minio
+loguru
