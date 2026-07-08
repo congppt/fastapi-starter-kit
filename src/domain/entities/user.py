@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 import datetime
 
-from ..common.auditable_entity import BaseAuditableEntity
-from ..exceptions import InvalidEntityStateException
-from ..valueobjects.email import Email
+from domain.common import BaseAuditableEntity
+from domain.exceptions import InvalidEntityStateException
+from domain.valueobjects import Email
 
 
 class User(BaseAuditableEntity[int]):

@@ -1,9 +1,11 @@
 from __future__ import annotations
+
 from typing import Generic, TypeVar
 
 from .event import BaseEvent
 
 TId = TypeVar("TId")
+
 
 class BaseEntity(Generic[TId]):
     id: TId

@@ -1,5 +1,6 @@
 import datetime
 from typing import TypeVar
+
 from .entity import BaseEntity
 
 TId = TypeVar("TId")

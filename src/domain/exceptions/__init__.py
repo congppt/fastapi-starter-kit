@@ -1,1 +1,5 @@
-from .base import DomainException, BusinessRuleViolationException, InvalidEntityStateException
+from .base import (
+    BusinessRuleViolationException,
+    DomainException,
+    InvalidEntityStateException,
+)

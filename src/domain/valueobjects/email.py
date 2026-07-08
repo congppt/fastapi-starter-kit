@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ..exceptions import InvalidEntityStateException
-from ..common.valueobject import ValueObject
+from domain.common import ValueObject
+from domain.exceptions import InvalidEntityStateException
 
 
 @dataclass(frozen=True, eq=False)
