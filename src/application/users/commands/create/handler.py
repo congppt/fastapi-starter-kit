@@ -31,8 +31,7 @@ class CreateUserHandler:
             password_hash=self._hasher.hash(command.password),
         )
 
-        created = self._uow.users.add(user)
-
+        created = await self._uow.users.add(user)
         await self._uow.commit()
 
         return created.id
