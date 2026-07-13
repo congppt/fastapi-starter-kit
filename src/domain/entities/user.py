@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+from datetime import datetime
 
 from domain.common import BaseAuditableEntity
 from domain.exceptions import InvalidEntityStateException

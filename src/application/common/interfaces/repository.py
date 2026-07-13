@@ -17,7 +17,7 @@ class IRepository(Protocol[TEntity, TId]):
     async def get_by_id(self, entity_id: TId) -> TEntity | None:
         """Load an entity by its identifier."""
 
-    def add(self, entity: TEntity) -> TEntity:
+    async def add(self, entity: TEntity) -> TEntity:
         """Persist a new entity and return it with generated fields (e.g. id)."""
 
     async def update(self, entity: TEntity) -> TEntity:
