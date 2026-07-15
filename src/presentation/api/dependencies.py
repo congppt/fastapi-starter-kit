@@ -8,7 +8,7 @@ from mediatr import Mediator
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from application.common.context import ApplicationContext
-from application.common.interfaces import ILogger
+from application.common.interfaces import IHasher, ILogger
 from application.mediator import create_mediator
 from infrastructure.persistence.sqlalchemy.unit_of_work import SqlAlchemyUnitOfWork
 
@@ -19,6 +19,10 @@ def _get_session_maker(request: Request) -> async_sessionmaker[AsyncSession]:
 
 def _get_logger(request: Request) -> ILogger:
     return request.app.state.logger
+
+
+def _get_hasher(request: Request) -> IHasher:
+    return request.app.state.hasher
 
 
 async def _get_application_context(
@@ -34,8 +38,9 @@ async def _get_application_context(
 
 def get_mediator(
     context: Annotated[ApplicationContext, Depends(_get_application_context)],
+    hasher: Annotated[IHasher, Depends(_get_hasher)],
 ) -> Mediator:
-    return create_mediator(context)
+    return create_mediator(context, hasher=hasher)
 
 
 MediatorDep = Annotated[

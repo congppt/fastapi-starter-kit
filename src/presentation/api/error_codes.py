@@ -15,7 +15,4 @@ ERROR_HTTP_STATUS: dict[str, int] = {
 
 
 def get_http_status_for_error_code(code: str) -> int:
-    try:
-        return ERROR_HTTP_STATUS[code]
-    except ValueError:
-        return status.HTTP_400_BAD_REQUEST
+    return ERROR_HTTP_STATUS.get(code, status.HTTP_400_BAD_REQUEST)
