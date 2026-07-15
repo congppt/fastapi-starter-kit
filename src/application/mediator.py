@@ -6,7 +6,15 @@ from typing import Any
 
 from mediatr import Mediator
 
+from application.common.behaviors.log import LogBehavior
 from application.common.context import ApplicationContext
+from application.users.commands.create.handler import CreateUserHandler
+
+# Behaviors run in registration order (outermost first).
+Mediator.register_behavior(LogBehavior)
+
+# Import handlers so @Mediator.handler decorators register them.
+HANDLERS = (CreateUserHandler,)
 
 
 def create_mediator(context: ApplicationContext, **dependencies: Any) -> Mediator:
@@ -16,7 +24,7 @@ def create_mediator(context: ApplicationContext, **dependencies: Any) -> Mediato
     Shared dependencies live on ``ApplicationContext``.
     Handler-specific dependencies are passed as keyword arguments and matched
     to handler ``__init__`` parameter names.
-  """
+    """
 
     def handler_class_manager(handler_cls: type, is_behavior: bool = False) -> object:
         kwargs = _resolve_handler_kwargs(handler_cls, context, dependencies)
