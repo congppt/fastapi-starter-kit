@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, StringConstraints
@@ -15,3 +16,15 @@ class CreateUserRequest(BaseModel):
 
 class CreateUserResponse(BaseModel):
     id: int
+
+
+class UserSummaryResponse(BaseModel):
+    """Summary fields returned in user list pages."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    email: str
+    name: str
+    is_active: bool
+    created_at: datetime | None

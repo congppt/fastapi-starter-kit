@@ -16,7 +16,6 @@ from infrastructure.persistence.sqlalchemy.db import (
     create_session_maker,
 )
 from infrastructure.persistence.sqlalchemy.settings import DatabaseSettings
-from infrastructure.security import ScryptHasher
 from presentation.api.exception_handler import register_exception_handlers
 from presentation.api.v1 import api_router
 
@@ -24,7 +23,6 @@ from presentation.api.v1 import api_router
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.logger = configure_logger(LoguruSettings())
-    app.state.hasher = ScryptHasher()
     engine = create_engine(DatabaseSettings())
     app.state.session_maker = create_session_maker(engine)
     try:

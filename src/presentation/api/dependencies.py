@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
+from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends, Request
@@ -11,6 +12,7 @@ from application.common.context import ApplicationContext
 from application.common.interfaces import IHasher, ILogger
 from application.mediator import create_mediator
 from infrastructure.persistence.sqlalchemy.unit_of_work import SqlAlchemyUnitOfWork
+from infrastructure.security import ScryptHasher
 
 
 def _get_session_maker(request: Request) -> async_sessionmaker[AsyncSession]:
@@ -21,8 +23,9 @@ def _get_logger(request: Request) -> ILogger:
     return request.app.state.logger
 
 
-def _get_hasher(request: Request) -> IHasher:
-    return request.app.state.hasher
+@lru_cache
+def _get_hasher() -> IHasher:
+    return ScryptHasher()
 
 
 async def _get_application_context(

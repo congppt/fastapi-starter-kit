@@ -9,12 +9,13 @@ from mediatr import Mediator
 from application.common.behaviors.log import LogBehavior
 from application.common.context import ApplicationContext
 from application.users.commands.create.handler import CreateUserHandler
+from application.users.queries.list.handler import ListUsersQueryHandler
 
 # Behaviors run in registration order (outermost first).
 Mediator.register_behavior(LogBehavior)
 
 # Import handlers so @Mediator.handler decorators register them.
-HANDLERS = (CreateUserHandler,)
+HANDLERS = (CreateUserHandler, ListUsersQueryHandler)
 
 
 def create_mediator(context: ApplicationContext, **dependencies: Any) -> Mediator:

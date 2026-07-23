@@ -12,3 +12,11 @@ class IUserRepository(IRepository[User, int], Protocol):
     async def get_by_email(self, email: Email) -> User | None: ...
 
     async def email_exists(self, email: Email) -> bool: ...
+
+    async def list(
+        self,
+        *,
+        offset: int = 0,
+        limit: int = 20,
+    ) -> tuple[list[User], int]:
+        """Return a page of users and the total count."""

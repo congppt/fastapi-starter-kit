@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from domain.entities import User
@@ -26,3 +26,19 @@ class UserRepository(SqlAlchemyRepository[User, UserModel, int]):
             select(UserModel.id).where(UserModel.email == str(email)).limit(1)
         )
         return result.scalar_one_or_none() is not None
+
+    async def list(
+        self,
+        *,
+        offset: int = 0,
+        limit: int = 20,
+    ) -> tuple[list[User], int]:
+        total = await self._session.scalar(select(func.count()).select_from(UserModel))
+        result = await self._session.execute(
+            select(UserModel)
+            .order_by(UserModel.id)
+            .offset(offset)
+            .limit(limit)
+        )
+        users = [model.to_domain_model() for model in result.scalars().all()]
+        return users, int(total or 0)

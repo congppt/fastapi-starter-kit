@@ -1,12 +1,21 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, status
+from typing import Annotated
+
+from fastapi import APIRouter, Query, status
 
 from application.users.commands.create import CreateUserCommand
+from application.users.queries.list import ListUsersQuery
 from presentation.api.dependencies import MediatorDep
-from presentation.api.schemas import CreateUserRequest, CreateUserResponse
+from presentation.api.schemas import (
+    CreateUserRequest,
+    CreateUserResponse,
+    PageParams,
+    PageResponse,
+    UserSummaryResponse,
+)
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter()
 
 
 @router.post(
@@ -26,3 +35,22 @@ async def create_user(
         )
     )
     return CreateUserResponse(id=user_id)
+
+
+@router.get(
+    "",
+    response_model=PageResponse[UserSummaryResponse],
+)
+async def list_users(
+    mediator: MediatorDep,
+    page: Annotated[PageParams, Query()],
+) -> PageResponse[UserSummaryResponse]:
+    result = await mediator.send_async(
+        ListUsersQuery.model_validate(page)
+    )
+    return PageResponse[UserSummaryResponse](
+        items=[UserSummaryResponse.model_validate(item) for item in result.items],
+        total=result.total,
+        offset=page.offset,
+        limit=page.limit,
+    )
